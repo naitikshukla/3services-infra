@@ -1,0 +1,31 @@
+# Use a base image with specific CUDA version installed
+FROM nvidia/cuda:11.0-base
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-venv \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements.txt file
+COPY requirements_asr.txt /app/requirements.txt
+
+# Set up virtual environment
+RUN python3 -m venv venv
+RUN /bin/bash -c "source venv/bin/activate && pip install -r requirements.txt"
+
+# Copy ASR service files
+COPY asr_service.py /app/asr_service.py
+
+# Install distil-whisper and other dependencies
+RUN pip3 install distil-whisper
+
+# Expose port 8000
+EXPOSE 8000
+
+# Command to run the service
+CMD ["bash", "-c", "source venv/bin/activate && python asr_service.py"]

@@ -1,0 +1,27 @@
+# Use a base image with Python support
+FROM python:latest
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-venv \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements.txt file
+COPY requirements_llm.txt /app/requirements.txt
+
+# Set up virtual environment
+RUN python3 -m venv venv
+RUN /bin/bash -c "source venv/bin/activate && pip install -r requirements.txt"
+
+# Copy necessary files
+COPY gui_logic.py /app/gui_logic.py
+COPY templates /app/templates
+COPY static /app/static
+
+# Command to run the service
+CMD ["python", "gui_logic.py"]
