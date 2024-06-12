@@ -7,46 +7,51 @@ services:
       dockerfile: Dockerfile_asr
     deploy:
       resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
         limits:
-          cpus: "0.5"
+          # cpus: "0.5"
           memory: 6G
     runtime: nvidia
     networks:
       - internal_network
     ports:
       - "8000:8000"
+    volumes:
+      - .:/workspace
     container_name: asr_service
 
-  llm_service:
-    build:
-      context: ./llm
-      dockerfile: Dockerfile_llm
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 6G
-    runtime: nvidia
-    networks:
-      - internal_network
-    ports:
-      - "11434:11434"
-    container_name: llm_service
+  # llm_service:
+  #   build:
+  #     context: ./llm
+  #     dockerfile: Dockerfile_llm
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: "0.5"
+  #         memory: 6G
+  #   runtime: nvidia
+  #   networks:
+  #     - internal_network
+  #   ports:
+  #     - "11434:11434"
+  #   container_name: llm_service
 
-  gui_logic:
-    build:
-      context: ./gui
-      dockerfile: Dockerfile_gui
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 2G
-    ports:
-      - "5000:5000"
-    networks:
-      - internal_network
-    container_name: gui_logic
+  # gui_logic:
+  #   build:
+  #     context: ./gui
+  #     dockerfile: Dockerfile_gui
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: "0.5"
+  #         memory: 2G
+  #   ports:
+  #     - "5000:5000"
+  #   networks:
+  #     - internal_network
+  #   container_name: gui_logic
 
 networks:
   internal_network:

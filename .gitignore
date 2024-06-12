@@ -161,3 +161,5 @@ cython_debug/
 /Dockersetup/llm/setup/ollama
 /Dockersetup/llm/setup/models
 
+/Dockersetup/asr/model/
+/Dockersetup/asr/uploads/

@@ -1,1 +1,11 @@
 sqlite
+gunicorn
+huggingface_hub
+transformers
+flask
+flask-uploads
+flask_restful
+accelerate
+flask-httpauth 
+pyjwt
+werkzeug
